@@ -1,0 +1,21 @@
+# Archivos de compilación de Maven
+**/target/
+*.class
+
+# Logs
+*.log
+**/derby.log
+**/work/server.log
+
+# Base de datos Derby y directorio de trabajo generado en ejecución
+**/work/database/
+**/work/
+*.lck
+
+# Configuración de IDEs comunes (opcional pero recomendado)
+.idea/
+*.iml
+.eclipse/
+.classpath
+.project
+.settings/
