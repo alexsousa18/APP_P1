@@ -7,6 +7,7 @@ import es.storeapp.business.exceptions.InstanceNotFoundException;
 import es.storeapp.business.exceptions.ServiceException;
 import es.storeapp.business.services.UserService;
 import es.storeapp.common.Constants;
+import es.storeapp.common.ConfigurationParameters; //
 import es.storeapp.web.cookies.UserInfo;
 import es.storeapp.web.exceptions.ErrorHandlingUtils;
 import es.storeapp.web.forms.LoginForm;
@@ -56,6 +57,9 @@ public class UserController {
     
     @Autowired
     ErrorHandlingUtils errorHandlingUtils;
+
+    @Autowired
+    private ConfigurationParameters configurationParameters;
     
     @GetMapping(Constants.LOGIN_ENDPOINT)
     public String doGetLoginPage(Model model) {
@@ -322,13 +326,9 @@ public class UserController {
                 return Constants.SEND_EMAIL_PAGE;
             }
             
-            String scheme = request.getScheme();
-            String serverName = request.getServerName();
-            Integer portNumber = request.getServerPort();
-            String contextPath = request.getContextPath();
-            
-            userService.sendResetPasswordEmail(email, MessageFormat.format(Constants.URL_FORMAT, scheme, 
-                    serverName, portNumber.toString(), contextPath, Constants.RESET_PASSWORD_ENDPOINT), locale);
+            String baseUrl = configurationParameters.getBaseUrl();
+            userService.sendResetPasswordEmail(email,
+                    baseUrl + Constants.RESET_PASSWORD_ENDPOINT, locale);
             
             redirectAttributes.addFlashAttribute(Constants.SUCCESS_MESSAGE, messageSource.getMessage(
                     Constants.MAIL_SUCCESS_MESSAGE, new Object[] { email }, locale));

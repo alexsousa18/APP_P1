@@ -15,6 +15,7 @@ public class ConfigurationParameters {
     private Boolean mailSslEnable;
     private Boolean mailStartTlsEnable;
     private String mailFrom;
+    private String baseUrl;
 
     public String getResources() {
         return resources;
@@ -78,6 +79,13 @@ public class ConfigurationParameters {
 
     public void setMailStartTlsEnable(Boolean mailStartTlsEnable) {
         this.mailStartTlsEnable = mailStartTlsEnable;
+    }
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
     }
 
     
