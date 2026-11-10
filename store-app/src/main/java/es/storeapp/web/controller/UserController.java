@@ -1,33 +1,14 @@
 package es.storeapp.web.controller;
 
-import es.storeapp.business.entities.User;
-import es.storeapp.business.exceptions.AuthenticationException;
-import es.storeapp.business.exceptions.DuplicatedResourceException;
-import es.storeapp.business.exceptions.InstanceNotFoundException;
-import es.storeapp.business.exceptions.ServiceException;
-import es.storeapp.business.services.UserService;
-import es.storeapp.common.Constants;
-import es.storeapp.common.ConfigurationParameters; //
-import es.storeapp.web.exceptions.ErrorHandlingUtils;
-import es.storeapp.web.forms.LoginForm;
-import es.storeapp.web.forms.ChangePasswordForm;
-import es.storeapp.web.forms.ResetPasswordForm;
-import es.storeapp.web.forms.UserProfileForm;
-import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Locale;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.NoSuchMessageException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.http.MediaType; //
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +20,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import es.storeapp.business.entities.User;
+import es.storeapp.business.exceptions.AuthenticationException;
+import es.storeapp.business.exceptions.DuplicatedResourceException;
+import es.storeapp.business.exceptions.InstanceNotFoundException;
+import es.storeapp.business.exceptions.ServiceException;
+import es.storeapp.business.services.UserService;
+import es.storeapp.common.ConfigurationParameters;
+import es.storeapp.common.Constants;
+import es.storeapp.web.exceptions.ErrorHandlingUtils;
+import es.storeapp.web.forms.ChangePasswordForm;
+import es.storeapp.web.forms.LoginForm;
+import es.storeapp.web.forms.ResetPasswordForm;
+import es.storeapp.web.forms.UserProfileForm;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 @Controller
 public class UserController {
@@ -152,7 +152,7 @@ public class UserController {
             return errorHandlingUtils.handleAuthenticationException(ex, loginForm.getEmail(), 
                     Constants.LOGIN_PAGE, model, locale);
         }
-        if (next != null && next.trim().length() > 0) {
+        if (next != null && next.startsWith("/") && !next.startsWith("//")) {
             return Constants.SEND_REDIRECT + next;
         }
         return Constants.SEND_REDIRECT + Constants.ROOT_ENDPOINT;
