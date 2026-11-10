@@ -277,4 +277,24 @@ public class UserService {
         }
     }
 
+    private final java.util.Map<String, Long> rememberTokens = new java.util.concurrent.ConcurrentHashMap<>();
+
+    public String createRememberToken(Long userId) {
+        String token = java.util.UUID.randomUUID().toString() + java.util.UUID.randomUUID().toString();
+        rememberTokens.put(token, userId);
+        return token;
+    }
+
+    public User findByRememberToken(String token) {
+        Long userId = rememberTokens.get(token);
+        if (userId == null) {
+            return null;
+        }
+        try {
+            return userRepository.findById(userId);
+        } catch (InstanceNotFoundException e) {
+            return null;
+        }
+    }
+
 }

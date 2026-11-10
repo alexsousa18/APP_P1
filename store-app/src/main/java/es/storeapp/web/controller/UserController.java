@@ -8,17 +8,13 @@ import es.storeapp.business.exceptions.ServiceException;
 import es.storeapp.business.services.UserService;
 import es.storeapp.common.Constants;
 import es.storeapp.common.ConfigurationParameters; //
-import es.storeapp.web.cookies.UserInfo;
 import es.storeapp.web.exceptions.ErrorHandlingUtils;
 import es.storeapp.web.forms.LoginForm;
 import es.storeapp.web.forms.ChangePasswordForm;
 import es.storeapp.web.forms.ResetPasswordForm;
 import es.storeapp.web.forms.UserProfileForm;
-import java.beans.XMLEncoder;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.Base64;
 import java.util.Locale;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -141,14 +137,12 @@ public class UserController {
                 logger.debug(MessageFormat.format("User {0} logged in", user.getEmail()));
             }
             if (loginForm.getRememberMe() != null && loginForm.getRememberMe()) {
-                Base64.Encoder encoder = Base64.getEncoder();
-                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                try (XMLEncoder xmlEncoder = new XMLEncoder(buffer);) {
-                    xmlEncoder.writeObject(new UserInfo(user.getEmail(), user.getPassword()));
-                }
-                Cookie userCookie = new Cookie(Constants.PERSISTENT_USER_COOKIE,
-                        new String(encoder.encode(buffer.toByteArray())));
-                userCookie.setMaxAge(604800); // 1 week
+                String token = userService.createRememberToken(user.getUserId());
+                Cookie userCookie = new Cookie(Constants.PERSISTENT_USER_COOKIE, token);
+                userCookie.setMaxAge(604800); // 1 semana
+                userCookie.setHttpOnly(true);
+                userCookie.setPath("/");
+                // userCookie.setSecure(true); // actívalo cuando sirvas por HTTPS
                 response.addCookie(userCookie);
             }
         } catch (AuthenticationException ex) {

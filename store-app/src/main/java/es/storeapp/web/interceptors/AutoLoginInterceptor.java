@@ -35,11 +35,9 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
                 if (cookieValue == null) {
                     continue;
                 }
-                Base64.Decoder decoder = Base64.getDecoder();
-                XMLDecoder xmlDecoder = new XMLDecoder(new ByteArrayInputStream(decoder.decode(cookieValue)));
-                UserInfo userInfo = (UserInfo) xmlDecoder.readObject();
-                User user = userService.findByEmail(userInfo.getEmail());
-                if (user != null && user.getPassword().equals(userInfo.getPassword())) {
+                String token = c.getValue();
+                User user = userService.findByRememberToken(token);
+                if (user != null) {
                     session.setAttribute(Constants.USER_SESSION, user);
                 }
             }
