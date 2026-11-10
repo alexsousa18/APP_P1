@@ -110,8 +110,13 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public Order findById(Long id) throws InstanceNotFoundException {
-        return orderRepository.findById(id);
+    public Order findById(Long id, Long userId) throws InstanceNotFoundException {
+        Order order = orderRepository.findById(id);
+        if (!order.getUser().getUserId().equals(userId)) {
+            throw exceptionGenerationUtils.toInstanceNotFoundException(
+                id, Constants.ORDER_ENTITY, Constants.INSTANCE_NOT_FOUND_MESSAGE);
+        }
+        return order;
     }
 
     @Transactional(readOnly = true)
