@@ -1,5 +1,14 @@
 package es.storeapp.business.services;
 
+import java.text.MessageFormat;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import es.storeapp.business.entities.CreditCard;
 import es.storeapp.business.entities.Order;
 import es.storeapp.business.entities.OrderLine;
@@ -14,13 +23,6 @@ import es.storeapp.business.repositories.ProductRepository;
 import es.storeapp.business.repositories.UserRepository;
 import es.storeapp.business.utils.ExceptionGenerationUtils;
 import es.storeapp.common.Constants;
-import java.text.MessageFormat;
-import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class OrderService {
@@ -70,6 +72,9 @@ public class OrderService {
                      Integer expirationMonth, Integer expirationYear, Boolean setAsDefault) 
         throws InstanceNotFoundException, InvalidStateException {
         Order order = orderRepository.findById(orderId);
+        if (!order.getUser().getUserId().equals(user.getUserId())) {
+            throw exceptionGenerationUtils.toInstanceNotFoundException(orderId, Constants.ORDER_ENTITY, Constants.INSTANCE_NOT_FOUND_MESSAGE);
+        }
         if(order.getState() != OrderState.PENDING) {
             if(logger.isWarnEnabled()) {
                 logger.warn(MessageFormat.format("Trying to pay the order {0}", order));
@@ -93,6 +98,9 @@ public class OrderService {
     public Order cancel(User user, Long orderId) 
         throws InstanceNotFoundException, InvalidStateException {
         Order order = orderRepository.findById(orderId);
+        if (!order.getUser().getUserId().equals(user.getUserId())) {
+            throw exceptionGenerationUtils.toInstanceNotFoundException(orderId, Constants.ORDER_ENTITY, Constants.INSTANCE_NOT_FOUND_MESSAGE);
+        }
         if(order.getState() != OrderState.PENDING) {
             throw exceptionGenerationUtils.toInvalidStateException(Constants.INVALID_STATE_EXCEPTION_MESSAGE);
         }
