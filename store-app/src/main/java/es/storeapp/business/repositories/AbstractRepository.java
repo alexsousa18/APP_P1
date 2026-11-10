@@ -1,18 +1,20 @@
 package es.storeapp.business.repositories;
 
-import es.storeapp.business.exceptions.InstanceNotFoundException;
-import es.storeapp.business.utils.ExceptionGenerationUtils;
-import es.storeapp.common.Constants;
 import java.text.MessageFormat;
 import java.util.List;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.GenericTypeResolver;
+
+import es.storeapp.business.exceptions.InstanceNotFoundException;
+import es.storeapp.business.utils.ExceptionGenerationUtils;
+import es.storeapp.common.Constants;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 
 public abstract class AbstractRepository<T> {
 
@@ -20,7 +22,7 @@ public abstract class AbstractRepository<T> {
     
     private static final String FIND_ALL_QUERY = "SELECT t FROM {0} t";
     private static final String FIND_ALL_ORDERED_QUERY = "SELECT t FROM {0} t ORDER BY t.{1}";
-    private static final String FIND_BY_TEXT_ATTRIBUTE_QUERY = "SELECT t FROM {0} t WHERE t.{1} = ''{2}'' ORDER BY t.{3}";
+    private static final String FIND_BY_TEXT_ATTRIBUTE_QUERY = "SELECT t FROM {0} t WHERE t.{1} = :value ORDER BY t.{2}";
     
     private final Class<T> genericType;
 
@@ -79,8 +81,9 @@ public abstract class AbstractRepository<T> {
     
     @SuppressWarnings("unchecked")
     public List<T> findByStringAttribute(String attribute, String value, String orderColumn) {
-        Query query = entityManager.createQuery(MessageFormat.format(FIND_BY_TEXT_ATTRIBUTE_QUERY, 
-                genericType.getSimpleName(), attribute, value, orderColumn));
+        String jpql = MessageFormat.format(FIND_BY_TEXT_ATTRIBUTE_QUERY, genericType.getSimpleName(), attribute, orderColumn);
+        Query query = entityManager.createQuery(jpql);
+        query.setParameter("value", value);
         return (List<T>) query.getResultList();
     }
 }
