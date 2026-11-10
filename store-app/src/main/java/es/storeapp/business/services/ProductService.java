@@ -1,5 +1,15 @@
 package es.storeapp.business.services;
 
+import java.text.MessageFormat;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import es.storeapp.business.entities.Category;
 import es.storeapp.business.entities.Comment;
 import es.storeapp.business.entities.Product;
@@ -11,14 +21,6 @@ import es.storeapp.business.repositories.ProductRepository;
 import es.storeapp.business.utils.ExceptionGenerationUtils;
 import es.storeapp.common.ConfigurationParameters;
 import es.storeapp.common.Constants;
-import java.text.MessageFormat;
-import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProductService {
@@ -39,6 +41,9 @@ public class ProductService {
 
     @Autowired
     ExceptionGenerationUtils exceptionGenerationUtils;
+
+    @Autowired
+    private es.storeapp.business.repositories.OrderLineRepository orderLineRepository;
     
     @Transactional(readOnly = true)
     public List<Product> findAllProducts() {
@@ -88,6 +93,9 @@ public class ProductService {
     public Comment comment(User user, Long productId, String text, Integer rating)
             throws InstanceNotFoundException {
         Product product = productRepository.findById(productId);
+        if (!orderLineRepository.findIfUserBuyProduct(user.getUserId(), productId)) {
+            throw exceptionGenerationUtils.toInstanceNotFoundException(productId, Constants.PRODUCT_ENTITY,Constants.INSTANCE_NOT_FOUND_MESSAGE);
+        }
         try {
             Comment comment = rateRepository.findByUserAndProduct(user.getUserId(), product.getProductId());
             if(logger.isDebugEnabled()) {
