@@ -214,10 +214,15 @@ public class UserService {
 
     private void saveProfileImage(Long id, String image, byte[] imageContents) {
         if (image != null && image.trim().length() > 0 && imageContents != null) {
+            String safeName = sanitizeImageName(image);
             File userDir = new File(resourcesDir, id.toString());
             userDir.mkdirs();
-            File profilePicture = new File(userDir, image);
-            try (FileOutputStream outputStream = new FileOutputStream(profilePicture);) {
+            File profilePicture = new File(userDir, safeName);
+            if (!isInside(userDir, profilePicture)) {
+                logger.error("Intento de path traversal con el nombre: {}", image);
+                return;
+            }
+            try (FileOutputStream outputStream = new FileOutputStream(profilePicture)) {
                 IOUtils.copy(new ByteArrayInputStream(imageContents), outputStream);
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
@@ -228,7 +233,11 @@ public class UserService {
     private void deleteProfileImage(Long id, String image) throws IOException {
         if (image != null && image.trim().length() > 0) {
             File userDir = new File(resourcesDir, id.toString());
-            File profilePicture = new File(userDir, image);
+            File profilePicture = new File(userDir, sanitizeImageName(image));
+            if (!isInside(userDir, profilePicture)) {
+                logger.error("Intento de path traversal con el nombre: {}", image);
+                return;
+            }
             Files.delete(profilePicture.toPath());
         }
     }
@@ -236,12 +245,36 @@ public class UserService {
     private byte[] getProfileImage(Long id, String image) throws IOException {
         if (image != null && image.trim().length() > 0) {
             File userDir = new File(resourcesDir, id.toString());
-            File profilePicture = new File(userDir, image);
+            File profilePicture = new File(userDir, sanitizeImageName(image));
+            if (!isInside(userDir, profilePicture)) {
+                logger.error("Intento de path traversal con el nombre: {}", image);
+                return null;
+            }
             try (FileInputStream input = new FileInputStream(profilePicture)) {
                 return IOUtils.toByteArray(input);
             }
         }
         return null;
+    }
+    private String sanitizeImageName(String image) {
+        String base = new File(image).getName(); // descarta cualquier ../ o ruta
+        String ext = "";
+        int dot = base.lastIndexOf('.');
+        if (dot >= 0) {
+            ext = base.substring(dot + 1).toLowerCase();
+        }
+        if (!ext.equals("png") && !ext.equals("jpg") && !ext.equals("jpeg") && !ext.equals("gif")) {
+            throw new IllegalArgumentException("Extension de imagen no permitida: " + ext);
+        }
+        return base;
+    }
+
+    private boolean isInside(File dir, File file) {
+        try {
+            return file.getCanonicalPath().startsWith(dir.getCanonicalPath() + File.separator);
+        } catch (IOException e) {
+            return false;
+        }
     }
 
 }
