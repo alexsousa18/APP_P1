@@ -45,6 +45,7 @@
                               <div class="input-group-prepend">
                                  <span class="input-group-text"><i class="fas fa-user-circle"></i></span>
                               </div>
+                              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                               <input th:field="*{name}" type="text" class="form-control" id="name"
                                      th:errorclass="error"
                                      th:placeholder="#{profile.input.name.placeholder}"
@@ -181,7 +182,9 @@
                            </div>
                         </div>
                      </form>
-                     <form method="POST" action="/profile/image/remove" id="remove-image-form"></form>
+                     <form method="POST" action="/profile/image/remove" id="remove-image-form">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                     </form>
                   </div>
                </div>
             </div>
