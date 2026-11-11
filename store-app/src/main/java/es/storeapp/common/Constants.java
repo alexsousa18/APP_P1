@@ -161,5 +161,6 @@ public class Constants {
     public static final String CONTENT_DISPOSITION_HEADER_VALUE = "attachment; filename={0}-{1}";
     public static final String PERSISTENT_USER_COOKIE = "user-info";
     public static final String URL_FORMAT = "{0}://{1}:{2}{3}{4}";
+    public static final String COMMENT_INVALID_PARAMS_MESSAGE = "comment.invalid.parameters";
     
 }

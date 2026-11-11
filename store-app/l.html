@@ -1,0 +1,201 @@
+<!DOCTYPE HTML>
+<html>
+
+   <head id='include-fragment'>
+
+      <title>Web Store</title>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1"/>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+      <link href="/webjars/bootstrap/css/bootstrap.css" rel="stylesheet" />
+      <link href="/webjars/jquery-form-validator/form-validator/theme-default.min.css" rel="stylesheet"/>
+      <link href="/webjars/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+      <link href="/webjars/bootstrap-star-rating/css/star-rating.min.css" rel="stylesheet" />
+      <link href="/Styles.css" rel="stylesheet" />
+      
+      <script src="/webjars/jquery/jquery.min.js"></script>
+      <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+      <script src="/webjars/font-awesome/svg-with-js/js/fontawesome-all.js"></script>
+      <script src="/webjars/jquery-form-validator/form-validator/jquery.form-validator.min.js"></script>
+      <script src="/webjars/datatables/js/jquery.dataTables.min.js"></script>
+      <script src="/webjars/datatables/js/dataTables.bootstrap4.min.js"></script>
+      <script src="/webjars/datatables-responsive/js/dataTables.responsive.js"></script>
+      <script src="/webjars/datatables-responsive/js/responsive.bootstrap4.js"></script>
+      <script src="/webjars/bootstrap-star-rating/js/star-rating.min.js"></script>
+      <script src="/webjars/jquery.inputmask/min/jquery.inputmask.bundle.min.js"></script>
+      <script src="/Scripts.js"></script>
+      
+   </head>
+
+   <body>
+      <div id='navbar-fragment'>
+         <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light border">
+            <a class="navbar-brand" href="/">
+               <span class="fa-layers fa-3x">
+                  <i class="fa fa-circle"></i>
+                  <i class="fas fa-shopping-cart fa-inverse" data-fa-transform="shrink-8 left-1.25"></i>
+               </span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" 
+                    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
+               <ul class="navbar-nav mr-auto">
+                  
+                   
+                  
+                  <li class="nav-item">
+                     <a class="nav-link" href="/">
+                        <span class="fas fa-home"></span>
+                        <div>Home</div>
+                     </a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="/products">
+                        <span class="fas fa-search"></span>
+                        <div>Products</div>
+                     </a>
+                  </li>
+               </ul>
+
+               <ul class="navbar-nav">
+                  <li class="nav-item">
+                     <a class="nav-link align-items-center" href="/cart">
+                        <span class="fas fa-shopping-cart"></span>
+                        <div><span>Cart</span>
+                           (<b>0</b>)</div>
+                     </a>
+                  </li>
+               </ul>
+               
+               <ul class="navbar-nav">
+                  <li class="nav-item">
+                     <a class="nav-link" href="/login">
+                        <span class="fas fa-sign-in-alt"></span>
+                        <div>Login</div>
+                     </a>
+                  </li>
+
+                  <li class="nav-item">
+                     <a class="nav-link" href="/registration">
+                        <span class="fas fa-user-plus"></span>
+                        <div>Register</div>
+                     </a>
+                  </li>
+               </ul>
+               
+            </div>
+         </nav>
+      </div>
+
+      <script>
+         $(document).ready(function () {
+             doConfigureFormValidation();
+         });
+      </script>
+
+      <div class="container login">
+
+         <div class="row w-100">
+            <div class="col col-padding">
+               <div class="card mx-auto bg-light center-block ui-helper-margin-top">
+                  <div class="card-body">
+
+                     <div class="row">
+                        <div class="col-12 form-title">
+                           <h2>Login</h2>
+                        </div>
+                     </div>
+
+                     <div id='messages-fragment'>
+         
+         
+
+         
+
+         
+         
+      </div>
+
+                     <form class="form-horizontal toggle-disabled" method="POST">
+                        <div class="form-group row">
+                           <label for="email" class="d-none d-sm-block col-sm-3 text-right input-label-middle">Email address</label>
+                           <div class="input-group col-12 col-sm-6">
+                              <div class="input-group-prepend">
+                                 <span class="input-group-text"><i class="fas fa-at"></i></span>
+                              </div>
+                              <input type="hidden" name="_csrf" value="fXH5ghcgTv8OMZJj-mB_N36HXwAzJddisiiLsKOkaAshRWpFGBebsCZCKp0jBfcGyE1LBUzjcmEGRLVP1BC9gZaUW25CJ199"/>
+                              <input type="email" class="form-control" id="email" name="email"
+                                     placeholder="Enter email"
+                                     data-validation-error-msg-container="#input-email-error"
+                                     data-validation="email" data-validation-error-msg="The email address is invalid" value="">
+                           </div>
+                        </div>
+                        <div class="form-group row d-none">
+                           <div class="d-none d-sm-block col-sm-3"></div>
+                           <div class="col-12 col-sm-6 text-left" id="input-email-error"></div>
+                        </div>
+                        <div class="form-group row">
+                           <label for="password" class="d-none d-sm-block col-sm-3 text-right input-label-middle">Password</label>
+                           <div class="input-group col-12 col-sm-6">
+                              <div class="input-group-prepend">
+                                 <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                              </div>
+                              <input type="password" class="form-control"
+                                     id="password" name="password"
+                                     placeholder="Enter your password"
+                                     data-validation-error-msg-container="#input-password-error"
+                                     data-validation="length" data-validation-length="min4" data-validation-error-msg="Password is too short">
+                           </div>
+                        </div>
+                        <div class="form-group row d-none">
+                           <div class="d-none d-sm-block col-sm-3"></div>
+                           <div class="col-12 col-sm-9 text-left" id="input-password-error"></div>
+                        </div>
+
+                        <div class="form-group row ui-helper-margin-top-decrease">
+                           <div class="d-none d-sm-block col-sm-3"></div>
+                           <div class="input-group col-12 col-sm-9">
+                              <label class="form-check-label input-label-middle">
+                                 <input type="checkbox" class="form-check-input" id="rememberMe1" name="rememberMe" value="true"><input type="hidden" name="_rememberMe" value="on"/>
+                                 <span>Remember me in this computer</span>
+                              </label>
+                           </div>
+                        </div>
+
+                        <div class="form-group row ui-helper-margin-top-decrease">
+                           <div class="d-none d-sm-block col-sm-3"></div>
+                           <div class="input-group col-12 col-sm-9">
+                              <label class="form-check-label input-label-middle">
+                                 <a class="" id="remove-image-link" href="/sendEmail">
+                                    <span>Forgot your password?</span>   
+                                 </a>
+                              </label>
+                           </div>
+                        </div>
+
+                        <div class="form-group row">
+                           <div class="d-none d-sm-block col-sm-3"></div>
+                           <div class="input-group col-12 col-sm-9">
+                              <button type="submit" class="btn btn-primary">Login</button>
+                           </div>
+                        </div>
+                     </form>
+
+                  </div>
+               </div>
+            </div>
+         </div>
+
+      </div>
+
+   </div>
+
+   <footer class="footer " id="footer-fragment">
+      </footer>
+</body>
+</html>

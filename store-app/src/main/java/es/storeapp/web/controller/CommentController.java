@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.validation.BindingResult;
 
 @Controller
 public class CommentController {
@@ -65,10 +66,14 @@ public class CommentController {
     @PostMapping(Constants.COMMENT_PRODUCT_ENDPOINT)
     public String doCreateComment(@SessionAttribute(Constants.USER_SESSION) User user,
                                   @Valid @ModelAttribute(Constants.COMMENT_FORM) CommentForm commentForm,
+                                  BindingResult result,
                                   HttpSession session, 
                                   RedirectAttributes redirectAttributes,
                                   Locale locale, 
                                   Model model) {
+                                    if (result.hasErrors()) {
+                                        return errorHandlingUtils.handleInvalidFormError(result, Constants.COMMENT_INVALID_PARAMS_MESSAGE, model, locale);
+                                    }
         try {
             productService.comment(user, commentForm.getProductId(), commentForm.getText(), commentForm.getRating());
             String message = messageSource.getMessage(Constants.PRODUCT_COMMENT_CREATED, new Object[0], locale);

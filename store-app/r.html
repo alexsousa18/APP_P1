@@ -1,0 +1,180 @@
+<!DOCTYPE HTML>
+<html>
+
+   <head id='include-fragment'>
+
+      <title>Web Store</title>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1"/>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+      <link href="/webjars/bootstrap/css/bootstrap.css" rel="stylesheet" />
+      <link href="/webjars/jquery-form-validator/form-validator/theme-default.min.css" rel="stylesheet"/>
+      <link href="/webjars/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+      <link href="/webjars/bootstrap-star-rating/css/star-rating.min.css" rel="stylesheet" />
+      <link href="/Styles.css" rel="stylesheet" />
+      
+      <script src="/webjars/jquery/jquery.min.js"></script>
+      <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+      <script src="/webjars/font-awesome/svg-with-js/js/fontawesome-all.js"></script>
+      <script src="/webjars/jquery-form-validator/form-validator/jquery.form-validator.min.js"></script>
+      <script src="/webjars/datatables/js/jquery.dataTables.min.js"></script>
+      <script src="/webjars/datatables/js/dataTables.bootstrap4.min.js"></script>
+      <script src="/webjars/datatables-responsive/js/dataTables.responsive.js"></script>
+      <script src="/webjars/datatables-responsive/js/responsive.bootstrap4.js"></script>
+      <script src="/webjars/bootstrap-star-rating/js/star-rating.min.js"></script>
+      <script src="/webjars/jquery.inputmask/min/jquery.inputmask.bundle.min.js"></script>
+      <script src="/Scripts.js"></script>
+      
+   </head>
+
+   <body>
+      <div id='navbar-fragment'>
+         <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light border">
+            <a class="navbar-brand" href="/">
+               <span class="fa-layers fa-3x">
+                  <i class="fa fa-circle"></i>
+                  <i class="fas fa-shopping-cart fa-inverse" data-fa-transform="shrink-8 left-1.25"></i>
+               </span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" 
+                    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
+               <ul class="navbar-nav mr-auto">
+                  
+                   <li class="nav-item">
+                     <span class="text-muted">
+                        <span class="fas fa-user"></span>
+                         
+                        <span>Xulio</span>
+                        (<span>prueba@gmail.com</span>)
+                     </span>
+                  </li>
+                  
+                  <li class="nav-item">
+                     <a class="nav-link" href="/">
+                        <span class="fas fa-home"></span>
+                        <div>Home</div>
+                     </a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="/products">
+                        <span class="fas fa-search"></span>
+                        <div>Products</div>
+                     </a>
+                  </li>
+               </ul>
+
+               <ul class="navbar-nav">
+                  <li class="nav-item">
+                     <a class="nav-link align-items-center" href="/cart">
+                        <span class="fas fa-shopping-cart"></span>
+                        <div><span>Cart</span>
+                           (<b>0</b>)</div>
+                     </a>
+                  </li>
+               </ul>
+               
+               
+               <ul class="navbar-nav">
+                  <li class="nav-item">
+                     <a class="nav-link" href="/orders">
+                        <span class="fas fa-credit-card"></span>
+                        <div>Orders</div>
+                     </a>
+                  </li>
+                  <li class="nav-item dropdown">
+                     <a class="nav-link dropdown-toggle" href="#" id="account-dropdown"
+                        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="fas fa-user-circle"></span>
+                        <br/><span>Account</span>
+                     </a>
+                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="account-dropdown">
+                        <a class="dropdown-item" href="/profile">
+                           <span class="fas fa-address-card"></span>&nbsp;
+                           <span>Profile</span></a>
+                        <a class="dropdown-item" href="/changePassword">
+                           <span class="fas fa-lock"></span>&nbsp;
+                           <span>Change Password</span></a>
+                     </div>                  
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="/logout">
+                        <span class="fas fa-sign-out-alt"></span>
+                        <div>Logout</div>
+                     </a>
+                  </li>
+               </ul>
+            </div>
+         </nav>
+      </div>
+
+      <script>
+         $(document).ready(function () {
+             doConfigureFormValidation();
+             doCreateRatings(false, 'sm');
+         });
+      </script>
+      <div class="container register">
+
+         <div class="row w-100">
+            <div class="col col-padding">
+               <div class="card mx-auto bg-light center-block ui-helper-margin-top">
+                  <div class="card-body">
+                     <div class="row">
+                        <div class="col-12 form-title">
+                           <h2>New Review: Compact 16 (Cameras)</h2>
+                        </div>
+                     </div>
+
+                     <div id='messages-fragment'>
+         
+         
+
+         
+
+         
+         
+      </div>
+
+                     <form class="form-horizontal" method="POST">
+                        <input type="hidden" name="_csrf" value="ucCLw4WaB019saZFP81I3iGUKUmoDEoay0YRxyFsjfRmaLgF3Kbp8bT4Yy9QhcMgDeB87BPwBCidbSg3rX4n9hRcvpEFCo09"/>
+                        <input type="hidden" id="productId" name="productId" value="7"/>
+                        <div class="form-group row">
+                           <label for="name" class="col-3 text-right input-label-middle-rating">Rate this product</label>
+                           <div class="input-group col-9 text-center">
+                              <input type="text" class="rating-loading" id="rating" name="rating" value="5"/>
+                           </div>
+                        </div>
+                        <div class="form-group row">
+                           <label for="address" class="col-3 text-right">Review Details</label>
+                           <div class="input-group col-9 col-sm-7">
+                              <textarea class="form-control" id="text" name="text" rows="3"
+                                        data-validation-error-msg-container="#input-text-error"
+                                        data-validation="required" data-validation-error-msg="Review text can not be empty">Comentario de prueba sin haber comprado</textarea>
+                           </div>
+                        </div>
+                        <div class="form-group row d-none">
+                           <div class="col-3"></div>
+                           <div class="col-9 text-left" id="input-text-error"></div>
+                        </div>
+                        <div class="form-group row">
+                           <div class="col-3"></div>
+                           <div class="input-group col-9">
+                              <button type="submit" class="btn btn-primary">Add Review</button>
+                           </div>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <footer class="footer " id="footer-fragment">
+      </footer>
+   </body>
+</html>

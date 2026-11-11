@@ -1,9 +1,12 @@
 package es.storeapp.web.forms;
-
+import jakarta.validation.constraints.*;
 public class CommentForm {
     
     private Long productId;
     private String text;
+    @NotNull
+    @Min(1)
+    @Max(5)
     private Integer rating;
 
     public String getText() {
