@@ -45,25 +45,31 @@ public class OrderService {
     ExceptionGenerationUtils exceptionGenerationUtils;
     
     @Transactional()
-    public Order create(User user, String name, String address, Integer price, List<Long> products) 
+    public Order create(User user, String name, String address, List<Long> productIds)
             throws InstanceNotFoundException {
         Order order = new Order();
         order.setName(name);
         order.setUser(user);
         order.setAddress(address != null ? address : user.getAddress());
-        order.setPrice(price);
+        // Vulnerabilidad 15: el precio NO se toma del cliente; se recalcula en el
+        // servidor sumando los precios reales de los productos del pedido.
+        order.setPrice(0);
         order.setState(OrderState.PENDING);
         order.setTimestamp(System.currentTimeMillis());
         orderRepository.create(order);
-        for (Long productId : products) {
+        int total = 0;
+        for (Long productId : productIds) {
             Product product = productRepository.findById(productId);
             product.setSales(product.getSales() + 1);
             OrderLine orderLine = new OrderLine();
             orderLine.setPrice(product.getPrice());
             orderLine.setProduct(product);
-            orderLine.setOrder(order);  
+            orderLine.setOrder(order);
             orderLineRepository.create(orderLine);
+            total += product.getPrice();
         }
+        order.setPrice(total);
+        orderRepository.update(order);
         return orderRepository.findById(order.getOrderId());
     }
     
